@@ -1,10 +1,11 @@
 import {BrowserRouter, Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
 import Ha from '../components/ha'
 import Haha from '../components/haha'
-
+import axios from 'axios';
+import React, {useState} from 'react';
 
 function App() {
-
+  let [shoes, setShoes] = useState([]);
   let navigate = useNavigate();
 
   return (
@@ -31,7 +32,29 @@ function App() {
           </Route>
         </Routes>
       {/* </BrowserRouter> */}
+
+      {shoes.map((a, i)=>{
+        return (
+          <>
+          <h4>상품명 : {shoes[i].title}</h4>
+          <p>상세설명 : {shoes[i].content}</p>
+          <p>가격 : {shoes[i].price}</p>
+          </>
+        )
+      })}
+
+      <button onClick={()=>{
+        axios.get('https://codingapple1.github.io/shop/data2.json').then((결과)=>{
+          let copy = [...shoes, ...결과.data]
+          setShoes(copy)
+        })
+        .catch(()=>{
+          console.log('실패함')
+        })
+      }}>버튼입니다</button>
     </div>
+
+    
   );
 }
 
